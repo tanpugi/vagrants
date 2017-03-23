@@ -1,0 +1,16 @@
+vm:
+  hostname: 'ubuntu-trusty64.pocoyorocks.com'
+  vb:
+    name: 'ubuntu-trusty64-vagrant-box'
+    memory: 768
+  network:
+    ip: '192.168.56.15'
+ssh:
+  username: 'vagrant'
+  password: 'vagrant'
+synced_folder:
+  installers: '.\.installers'
+  home: '.\ubuntu-trusty64'
+  config: '.\ubuntu-trusty64\config'
+  provision: '.\ubuntu-trusty64\provision'
+  shared: '.\ubuntu-trusty64\shared'

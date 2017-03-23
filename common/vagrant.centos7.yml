@@ -1,0 +1,16 @@
+vm:
+  hostname: 'centos7.pocoyorocks.com'
+  vb:
+    name: 'puppetlabs/centos-7.0-64-puppet'
+    memory: 768
+  network:
+    ip: '192.168.56.16'
+ssh:
+  username: 'vagrant'
+  password: 'vagrant'
+synced_folder:
+  installers: '.\.installers'
+  home: '.\centos7'
+  config: '.\centos7\config'
+  provision: '.\centos7\provision'
+  shared: '.\centos7\shared'

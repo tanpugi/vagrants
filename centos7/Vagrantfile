@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+# boxes at https://atlas.hashicorp.com/search.
+Vagrant.configure(2) do |config|
+
+  vconfig = YAML::load_file("./vagrant.yml")
+
+  config.vbguest.auto_update = false
+  config.ssh.insert_key = false
+  
+  config.vm.hostname = vconfig['vm']['hostname']
+  config.vm.box = vconfig['vm']['box']
+  config.vm.boot_timeout = 9000
+
+  #config.ssh.username = vconfig['ssh']['username']
+  #config.ssh.password = vconfig['ssh']['password']
+
+  config.vm.network "private_network", ip: vconfig['vm']['network']['ip']
+  config.vm.network "public_network"
+
+  config.vm.synced_folder vconfig['synced_folder']['config'], "/home/vagrant/config"
+  config.vm.synced_folder vconfig['synced_folder']['provision'], "/home/vagrant/provision"
+  config.vm.synced_folder vconfig['synced_folder']['shared'], "/home/vagrant/shared"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.name = vconfig['vm']['vb']['name']
+	vb.memory = vconfig['vm']['vb']['memory']
+  end
+
+  
+  config.vm.provision :shell, path: "./provision/_init.sh", args: "2>&1 | tee ./shared/bootstrap.log"
+
+
+  config.vm.provision :shell, path: "./provision/_completed.sh", args: "2>&1 | tee ./shared/bootstrap.log"
+end
